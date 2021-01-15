@@ -31,11 +31,10 @@ router.get('/:id', validateProjectId, (req, res) => {
 })
 
 router.get('/:id/actions', validateActionProjectId, (req, res) => {
-    // Here
     // This is a hack.
     // For some reason (a) the actions contained in the project's actions array
-    // differ from (b) the actions contained in the actions array (for the given)
-    // project_id ONLY in the respect that (a)'s "completed" values are always false.
+    // differ from (b) the actions contained in the actions array (for the given
+    // project_id) ONLY in the respect that (a)'s "completed" values are always false.
     // So I am just returning the actions array filtered by project id.
     Actions.get()
         .then(actions => {
@@ -50,7 +49,6 @@ router.get('/:id/actions', validateActionProjectId, (req, res) => {
                 message: 'Error getting actions for the given project'
             })
         })
-    // Here
 })
 
 router.post('/', validateProject, (req, res) => {
