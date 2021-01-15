@@ -1,7 +1,7 @@
 const express = require('express')
 const Actions = require('./actions-model')
 
-const { validateActionId, validateAction } = require('../middleware/middleware.js')
+const { validateActionId, validateAction, validateActionProjectId } = require('../middleware/middleware.js')
 
 const router = express.Router()
 
@@ -22,7 +22,7 @@ router.get('/:id', validateActionId, (req, res) => {
     res.status(200).json(req.action)
 })
 
-router.post('/', validateAction, (req, res) => {
+router.post('/', validateAction, validateActionProjectId, (req, res) => {
     Actions.insert(req.body)
         .then(action => {
             res.status(201).json(action)
@@ -35,7 +35,7 @@ router.post('/', validateAction, (req, res) => {
         })
 })
 
-router.put('/:id', validateActionId, validateAction, (req, res) => {
+router.put('/:id', validateActionId, validateAction, validateActionProjectId, (req, res) => {
     Actions.update(req.params.id, req.body)
         .then(updated => {
             res.status(200).json(updated)
