@@ -30,6 +30,7 @@ router.get('/:id', validateProjectId, (req, res) => {
 })
 
 router.get('/:id/actions', validateProjectId, (req, res) => {
+    // Here
     res.status(200).json(req.project.actions)
 })
 
