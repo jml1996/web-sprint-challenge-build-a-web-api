@@ -1,7 +1,8 @@
 const express = require('express')
 const Projects = require('./projects-model')
+const Actions = require('../actions/actions-model')
 
-const { validateProjectId, validateProject } = require('../middleware/middleware.js')
+const { validateProjectId, validateProject, validateActionProjectId } = require('../middleware/middleware.js')
 
 const router = express.Router()
 
@@ -29,9 +30,26 @@ router.get('/:id', validateProjectId, (req, res) => {
     res.status(200).json(req.project)
 })
 
-router.get('/:id/actions', validateProjectId, (req, res) => {
+router.get('/:id/actions', validateActionProjectId, (req, res) => {
     // Here
-    res.status(200).json(req.project.actions)
+    // This is a hack.
+    // For some reason (a) the actions contained in the project's actions array
+    // differ from (b) the actions contained in the actions array (for the given)
+    // project_id ONLY in the respect that (a)'s "completed" values are always false.
+    // So I am just returning the actions array filtered by project id.
+    Actions.get()
+        .then(actions => {
+            const filtered = actions.filter(action => {
+                return action["project_id"] == req.params.id
+            })
+            res.status(200).json(filtered)
+        })
+        .catch(error => {
+            console.log(error)
+            res.status(500).json({
+                message: 'Error getting actions for the given project'
+            })
+        })
     // Here
 })
 

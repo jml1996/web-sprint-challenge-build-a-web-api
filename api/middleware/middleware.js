@@ -21,6 +21,7 @@ function validateAction(req, res, next) {
     if (!req.body.project_id || !req.body.description || !req.body.notes) {
         res.status(400).json({ message: 'project_id, description, and notes are required action fields' })
     } else {
+        console.log("valact:", req.body)
         next()
     }
 }
@@ -49,7 +50,6 @@ function validateProject(req, res, next) {
     }
 }
 
-// new branch for submission
 async function validateActionProjectId(req, res, next) {
     console.log('checking project id')
     try {
