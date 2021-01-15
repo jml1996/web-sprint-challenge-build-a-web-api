@@ -19,9 +19,18 @@ router.get('/', (req, res) => {
 })
 
 router.get('/:id', validateProjectId, (req, res) => {
-    // Are actions considered part of projects here?
-    // If so, why here and not in get('/')?
+    // ******
+    // From spec: "[GET] /api/projects/:id sends a project with the given id as the body of the response."
+    // Are actions considered part of a "project," here?
+    // If so, why are they considered part of projects here, and not in get('/')?
+    // This has to do with the preexisting code in projects-model.js; it just seems
+    // odd that projects-model.js functions that way.
+    // ******
     res.status(200).json(req.project)
+})
+
+router.get('/:id/actions', validateProjectId, (req, res) => {
+    res.status(200).json(req.project.actions)
 })
 
 router.post('/', validateProject, (req, res) => {
